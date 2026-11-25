@@ -13,8 +13,28 @@ in Gaza, NATO's alarm over Russia's reported nuclear satellite, and US states
 suing Musk's firms over Grok's sexualised images. Every story was checked
 against that day's reporting (Reuters, AP, AFP, Al Jazeera, CNN).
 
-`main.py` (Python 3, standard library only) holds the image embedded as
-base64 and writes it to `$MAKEFUN_OUTPUT_DIR/entry.png` (default
-`/output/entry.png`), byte for byte, so repeated runs are identical.
-The image is a 1024x1024 PNG, about 141 KB, sha256
-7a0f004c4721b3a72289dff0ebd87f94098f57efd3c1712d5b7587272afc8432.
+## How it works
+
+`main.py` (Python 3, standard library only) contains **no embedded image
+data**. The front page is drawn at run time by the program itself: a
+hand-defined 5x7 bitmap font, a small word-wrapping typesetter, and a
+minimal PNG writer built on `struct` and `zlib`. Running the program
+renders the whole page — deep blue background, masthead, lead panel and
+five story panels — pixel by pixel, then writes it out as a PNG.
+
+## Run it
+
+```sh
+python3 main.py                        # writes /output/entry.png
+MAKEFUN_OUTPUT_DIR=/tmp/out python3 main.py
+```
+
+The output goes to `$MAKEFUN_OUTPUT_DIR/entry.png` (default
+`/output/entry.png`). The render is fully deterministic: repeated runs
+produce byte-for-byte identical files.
+
+## Output
+
+- Format: PNG, 1024x1024, 8-bit RGB
+- Size: 19376 bytes
+- sha256: 6b6d696f19ed79985f72ffca05ae0742c0648da356890b77709acde4f5b3d711
